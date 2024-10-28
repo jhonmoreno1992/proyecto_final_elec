@@ -15,7 +15,7 @@ public class usuario {
     
     public boolean validarUsuario(String username, String password){
         try {
-            String sql = "SELECT * FROM usuario WHERE nombre_usuario=? AND password=?";
+            String sql = "SELECT * FROM usuario WHERE usuario=? AND password=?";
             PreparedStatement ps = con.getConnection().prepareStatement(sql);
             ps.setString(1, username);
             ps.setString(2, password);

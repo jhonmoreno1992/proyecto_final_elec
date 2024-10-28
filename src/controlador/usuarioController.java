@@ -6,13 +6,10 @@ package controlador;
 
 import javax.swing.JOptionPane;
 import modelo.usuario;
-import vista.frmRegistro;
 import vista.frmLogin;
+import vista.frmProducto;
 
-/**
- *
- * @author usuario
- */
+
 public class usuarioController {
     
     public final usuario modeloUsuario;
@@ -26,13 +23,11 @@ public class usuarioController {
     public void iniciarSesion(){
         String username = vistaLogin.txtusuario.getText();
         String password = vistaLogin.txtpassword.getText();
-        String typeuser = vistaLogin.cbmtipousuario.getActionCommand();
-                
         if(modeloUsuario.validarUsuario(username, password)){
             JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso");
-            frmRegistro registro = new frmRegistro();
-            registro.setVisible(true);
-            registro.setLocationRelativeTo(null);
+            frmProducto producto = new frmProducto();
+            producto.setVisible(true);
+            producto.setLocationRelativeTo(null);
             this.vistaLogin.setVisible(false);
         }else{
             JOptionPane.showMessageDialog(null, "Los Datos estan Incorrectos");
