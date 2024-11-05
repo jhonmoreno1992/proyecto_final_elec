@@ -34,6 +34,7 @@ public class productoController implements ActionListener {
         this.vistaProducto = vistaProducto;
         this.vistaProducto.btnguardar.addActionListener(this);
         this.vistaProducto.btnlimpiar.addActionListener(this);
+        this.vistaProducto.btnactualizar.addActionListener(this);
 
     }
 
@@ -79,6 +80,16 @@ public class productoController implements ActionListener {
         vistaProducto.tbproducto.setModel(datos);
         vistaProducto.tbproducto.setRowHeight(100); // Ajustar la altura de la fila para la imagen
     }
+    
+     public void limpiar() {
+        vistaProducto.txtproducto.setText(null);
+        vistaProducto.txtdescripcion.setText(null);
+        vistaProducto.txtprecio.setText(null);
+        vistaProducto.txtobservaciones.setText(null);
+        vistaProducto.txtstock.setText(null);
+        vistaProducto.lblimagen.setText(null);
+         vistaProducto.txtcategoria.setText(null);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -105,6 +116,32 @@ public class productoController implements ActionListener {
                 this.updateTable(); // Actualizar tabla para mostrar el nuevo registro
             }
         }
+        if (e.getSource() == vistaProducto.btnactualizar) {
+            fila = vistaProducto.tbproducto.getSelectedRow();
+            if (fila == -1) {
+                JOptionPane.showMessageDialog(null, "Por favor seleccione una fila para Actualizar");
+                return;
+            }
+            int id = Integer.parseInt(vistaProducto.tbproducto.getValueAt(fila, 0).toString());
+            String nombreproducto = vistaProducto.txtproducto.getText();
+            String descripcion = vistaProducto.txtdescripcion.getText();
+            long precio = Long.parseLong(vistaProducto.txtprecio.getText());
+            String observaciones = vistaProducto.txtobservaciones.getText();
+            long stock = Long.parseLong(vistaProducto.txtstock.getText());
+            String imagen = vistaProducto.lblimagen.getText();
+            String categoria_id_categoria = vistaProducto.txtproducto.getText();
+            
+            
+            modeloProducto.ActualizarProducto(id, nombreproducto, descripcion, precio, observaciones, stock, imagen, categoria_id_categoria);
+            JOptionPane.showMessageDialog(vistaProducto, "Se ha modificado su registro");
+            this.updateTable();
+            this.limpiar();
+        }
+        
+        if(e.getSource() == vistaProducto.btnlimpiar){
+            this.limpiar();
+        }
+        
     }
 
 }

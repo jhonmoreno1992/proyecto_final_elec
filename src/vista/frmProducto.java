@@ -8,6 +8,7 @@ import controlador.productoController;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.producto;
 
@@ -16,6 +17,8 @@ import modelo.producto;
  * @author usuario
  */
 public class frmProducto extends javax.swing.JFrame {
+
+    private Object modeloProducto;
 
     /**
      * Creates new form frmProducto
@@ -96,8 +99,18 @@ public class frmProducto extends javax.swing.JFrame {
         });
 
         btnmodificar.setText("MODIFICAR");
+        btnmodificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnmodificarActionPerformed(evt);
+            }
+        });
 
         btnactualizar.setText("ACTUALIZAR");
+        btnactualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnactualizarActionPerformed(evt);
+            }
+        });
 
         btnlimpiar.setText("LIMPIAR");
 
@@ -265,35 +278,63 @@ public class frmProducto extends javax.swing.JFrame {
 
     private void btnimagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnimagenActionPerformed
         String Ruta = "";
-        
+
         JFileChooser jFileChooser = new JFileChooser();
-        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG,JPEG","jpg", "jpeg");
+        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG,JPEG", "jpg", "jpeg");
         jFileChooser.setFileFilter(filtrado);
-        
+
         int respuesta = jFileChooser.showOpenDialog(this);
-        
+
         if (respuesta == JFileChooser.APPROVE_OPTION) {
             Ruta = jFileChooser.getSelectedFile().getPath();
-            
+
             Image mImagen = new ImageIcon(Ruta).getImage();
             ImageIcon mIcono = new ImageIcon(mImagen.getScaledInstance(lblimagen.getWidth(), lblimagen.getHeight(), Image.SCALE_SMOOTH));
             lblimagen.setIcon(mIcono);
-            
+
             lblimagen.setText(Ruta);
-            
+
         }
-                
+
     }//GEN-LAST:event_btnimagenActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-    producto p = new producto();
-    productoController pc = new productoController(p, this);
-    pc.updateTable();
+        producto p = new producto();
+        productoController pc = new productoController(p, this);
+        pc.updateTable();
     }//GEN-LAST:event_formWindowOpened
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnguardarActionPerformed
+
+    private void btnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodificarActionPerformed
+        int fila = tbproducto.getSelectedRow();
+        if (fila >= 0) {
+            // Cargar los datos de la fila seleccionada en los campos de texto
+            txtproducto.setText(tbproducto.getValueAt(fila, 1).toString());
+            txtdescripcion.setText(tbproducto.getValueAt(fila, 2).toString());
+            txtprecio.setText(tbproducto.getValueAt(fila, 3).toString());
+            txtobservaciones.setText(tbproducto.getValueAt(fila, 4).toString());
+            txtstock.setText(tbproducto.getValueAt(fila, 5).toString());
+            lblimagen.setText(tbproducto.getValueAt(fila, 6).toString());
+            txtcategoria.setText(tbproducto.getValueAt(fila, 7).toString());
+
+            Object imagenObj = tbproducto.getValueAt(fila, 6);
+            if (imagenObj instanceof ImageIcon) {
+                lblimagen.setIcon((ImageIcon) imagenObj);
+            } else {
+                lblimagen.setIcon(null); // Limpiar si no hay imagen
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para editar.");
+        }      // TODO add your handling code here:
+    }//GEN-LAST:event_btnmodificarActionPerformed
+
+    private void btnactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarActionPerformed
+       
+    }//GEN-LAST:event_btnactualizarActionPerformed
 
     /**
      * @param args the command line arguments

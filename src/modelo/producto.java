@@ -60,6 +60,7 @@ public class producto {
         }
         return datos;
     }
+    
 
     public void AgregarProducto(String nombreproducto, String descripcion, long precio, String observaciones, long stock, byte[] imagen, String categoria_id_categoria) {
         String sql = "INSERT INTO producto(nombreproducto, descripcion, precio, observaciones, stock, imagen, categoria_id_categoria) VALUES(?,?,?,?,?,?,?)";
@@ -76,6 +77,26 @@ public class producto {
             ps.close();
         } catch (Exception e) {
             System.err.println(e);
+        }
+    }
+    
+    public void ActualizarProducto(int id, String nombreproducto, String descripcion, long precio, String observaciones, long stock, String imagen, String categoria_id_categoria){
+        String sql = "UPDATE producto SET nombreproducto=?, descripcion=?, precio=?, observaciones=?, stock=?, imagen=?, categoria_id_categoria=? WHERE idproducto=?";
+        try{
+            PreparedStatement ps = con.getConnection().prepareStatement(sql);
+            ps.setString(1, nombreproducto);
+            ps.setString(2, descripcion);
+            ps.setLong(3, precio);
+            ps.setString(4, observaciones);
+            ps.setLong(5, stock);
+            ps.setString(6, imagen);
+            ps.setString(7, categoria_id_categoria);
+            ps.setInt(8, id);
+            ps.execute();
+            ps.close();
+        } catch (Exception e) {
+            System.err.println(e);    
+        
         }
     }
 }
