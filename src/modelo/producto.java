@@ -80,7 +80,7 @@ public class producto {
         }
     }
     
-    public void ActualizarProducto(int id, String nombreproducto, String descripcion, long precio, String observaciones, long stock, String imagen, String categoria_id_categoria){
+    public void ActualizarProducto(int id, String nombreproducto, String descripcion, long precio, String observaciones, long stock, byte[] imagen, String categoria_id_categoria){
         String sql = "UPDATE producto SET nombreproducto=?, descripcion=?, precio=?, observaciones=?, stock=?, imagen=?, categoria_id_categoria=? WHERE idproducto=?";
         try{
             PreparedStatement ps = con.getConnection().prepareStatement(sql);
@@ -89,7 +89,7 @@ public class producto {
             ps.setLong(3, precio);
             ps.setString(4, observaciones);
             ps.setLong(5, stock);
-            ps.setString(6, imagen);
+            ps.setBytes(6, imagen);
             ps.setString(7, categoria_id_categoria);
             ps.setInt(8, id);
             ps.execute();

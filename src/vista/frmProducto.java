@@ -6,9 +6,7 @@ package vista;
 
 import controlador.productoController;
 import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import modelo.producto;
 
@@ -18,13 +16,23 @@ import modelo.producto;
  */
 public class frmProducto extends javax.swing.JFrame {
 
-    private Object modeloProducto;
-
-    /**
-     * Creates new form frmProducto
-     */
+    
     public frmProducto() {
         initComponents();
+        
+        // Agregar el ActionListener para el botón btnLogin
+        btncerrar.addActionListener(evt -> abrirLogin());
+    }
+    
+    // Método para abrir frmLogin y cerrar frmRegistro
+    private void abrirLogin() {
+        // Crear una instancia del formulario de login
+        frmLogin loginForm = new frmLogin();
+        loginForm.setVisible(true); // Mostrar el formulario de login
+        loginForm.setLocationRelativeTo(null); // Centrar el formulario de login
+
+        // Cerrar el formulario de registro actual
+        this.dispose();
     }
 
     /**
@@ -60,6 +68,7 @@ public class frmProducto extends javax.swing.JFrame {
         txtstock = new javax.swing.JTextField();
         btnimagen = new javax.swing.JButton();
         lblimagen = new javax.swing.JLabel();
+        btncerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -69,7 +78,7 @@ public class frmProducto extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 153, 153));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 0, 153), new java.awt.Color(255, 0, 153), new java.awt.Color(255, 0, 153), new java.awt.Color(255, 0, 153)));
 
         jLabel1.setFont(new java.awt.Font("Freestyle Script", 1, 24)); // NOI18N
@@ -91,6 +100,7 @@ public class frmProducto extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tbproducto);
 
+        btnguardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnguardar.setText("GUARDAR");
         btnguardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -98,6 +108,7 @@ public class frmProducto extends javax.swing.JFrame {
             }
         });
 
+        btnmodificar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnmodificar.setText("MODIFICAR");
         btnmodificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +116,7 @@ public class frmProducto extends javax.swing.JFrame {
             }
         });
 
+        btnactualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnactualizar.setText("ACTUALIZAR");
         btnactualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,20 +124,28 @@ public class frmProducto extends javax.swing.JFrame {
             }
         });
 
+        btnlimpiar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnlimpiar.setText("LIMPIAR");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("PRODUCTO:");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("DESCRIPCION:");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel5.setText("PRECIO:");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("OBSERVACIONES:");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("STOCK:");
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("IMAGEN:");
 
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel9.setText("CATEGORIA:");
 
         txtcategoria.addActionListener(new java.awt.event.ActionListener() {
@@ -134,12 +154,16 @@ public class frmProducto extends javax.swing.JFrame {
             }
         });
 
+        btnimagen.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnimagen.setText("SELECCIONAR IMAGEN");
         btnimagen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnimagenActionPerformed(evt);
             }
         });
+
+        btncerrar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btncerrar.setText("CERRAR");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -183,7 +207,7 @@ public class frmProducto extends javax.swing.JFrame {
                     .addComponent(btnlimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(308, 308, 308)
                         .addComponent(jLabel1))
@@ -192,15 +216,23 @@ public class frmProducto extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 848, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(257, 257, 257)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2)
+                        .addGap(165, 165, 165)
+                        .addComponent(btncerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(20, 20, 20)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btncerrar)
+                        .addGap(17, 17, 17)))
                 .addComponent(jLabel1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -317,23 +349,25 @@ public class frmProducto extends javax.swing.JFrame {
             txtprecio.setText(tbproducto.getValueAt(fila, 3).toString());
             txtobservaciones.setText(tbproducto.getValueAt(fila, 4).toString());
             txtstock.setText(tbproducto.getValueAt(fila, 5).toString());
-            lblimagen.setText(tbproducto.getValueAt(fila, 6).toString());
             txtcategoria.setText(tbproducto.getValueAt(fila, 7).toString());
 
+            // Obtener el objeto de la imagen y cargarla en lblimagen si es un ImageIcon
             Object imagenObj = tbproducto.getValueAt(fila, 6);
-            if (imagenObj instanceof ImageIcon) {
-                lblimagen.setIcon((ImageIcon) imagenObj);
+            if (imagenObj instanceof ImageIcon imageIcon) {
+                lblimagen.setIcon(imageIcon);
+                lblimagen.setText(""); // Asegurarse de que no se muestre texto adicional
             } else {
                 lblimagen.setIcon(null); // Limpiar si no hay imagen
             }
 
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una fila para editar.");
-        }      // TODO add your handling code here:
+        }
+
     }//GEN-LAST:event_btnmodificarActionPerformed
 
     private void btnactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarActionPerformed
-       
+
     }//GEN-LAST:event_btnactualizarActionPerformed
 
     /**
@@ -373,6 +407,7 @@ public class frmProducto extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnactualizar;
+    public javax.swing.JButton btncerrar;
     public javax.swing.JButton btnguardar;
     public javax.swing.JButton btnimagen;
     public javax.swing.JButton btnlimpiar;

@@ -5,27 +5,77 @@ package vista;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import controlador.usuarioController;
+import java.awt.Image;
+import java.util.prefs.Preferences;
+import javax.swing.ImageIcon;
 import modelo.usuario;
+
 /**
  *
  * @author usuario
  */
 public class frmLogin extends javax.swing.JFrame {
-    
-     private void abrirFormularioRegistro() {
-         // Cerrar el formulario actual (frmLogin)
-    this.dispose();
-    
-    // Crear una nueva instancia de frmRegistro
-    frmRegistro registroForm = new frmRegistro();
-    
-    // Hacer visible el nuevo formulario
-    registroForm.setVisible(true);
+
+    private void abrirFormularioRegistro() {
+        // Cerrar el formulario actual (frmLogin)
+        this.dispose();
+
+        // Crear una nueva instancia de frmRegistro
+        frmRegistro registroForm = new frmRegistro();
+
+        // Hacer visible el nuevo formulario
+        registroForm.setVisible(true);
     }
 
-    
+    private static final String USUARIO_PREF_KEY = "ultimoUsuario";
+    private Preferences prefs = Preferences.userRoot().node(this.getClass().getName());
+
+    private static final String PASSWORD_PREF_KEY = "ultimoPassword";
+    private Preferences prefs2 = Preferences.userRoot().node(this.getClass().getName());
+
+    private void ajustarIcono(javax.swing.JLabel label, String rutaIcono) {
+        ImageIcon iconoOriginal = new ImageIcon(getClass().getResource(rutaIcono));
+        
+        // Obtener el tamaño del JLabel
+        int ancho = label.getWidth();
+        int alto = label.getHeight();
+        
+        // Redimensionar la imagen al tamaño del JLabel
+        Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+        
+        // Establecer el icono redimensionado en el JLabel
+        label.setIcon(new ImageIcon(imagenRedimensionada));
+    }
     public frmLogin() {
         initComponents();
+
+        // Cargar y redimensionar el icono al tamaño del JLabel
+        ajustarIcono(lblVerPassword, "/asset/ojo2.png");
+
+        lblVerPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtpassword.setEchoChar((char) 0); // Mostrar la contraseña
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                txtpassword.setEchoChar('*'); // Ocultar la contraseña
+            }
+        });
+
+        // Obtener el último usuario guardado en las preferencias y mostrarlo en txtusuario
+        String ultimoUsuario = prefs.get(USUARIO_PREF_KEY, "");
+        if (!ultimoUsuario.isEmpty()) {
+            txtusuario.setText(ultimoUsuario);
+            chkusuario.setSelected(true); // Seleccionar el checkbox si hay un usuario guardado
+        }
+        // Obtener el último password guardado en las preferencias y mostrarlo en txtpassword
+        String ultimaPassword = prefs2.get(PASSWORD_PREF_KEY, "");
+        if (!ultimaPassword.isEmpty()) {
+            txtpassword.setText(ultimaPassword);
+            chkpassword.setSelected(true); // Seleccionar el checkbox si hay un password guardado
+        }
     }
 
     /**
@@ -52,6 +102,7 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lblVerPassword = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
 
@@ -82,10 +133,13 @@ public class frmLogin extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(255, 51, 204), new java.awt.Color(255, 51, 204), new java.awt.Color(255, 51, 204), new java.awt.Color(255, 51, 204)));
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Usuario:");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Contraseña:");
 
+        btningresar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btningresar.setText("INGRESAR");
         btningresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,6 +147,7 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRegistrar.setText("REGISTRARSE");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,8 +155,17 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
 
+        chkusuario.setBackground(new java.awt.Color(255, 204, 204));
+        chkusuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         chkusuario.setText("Recordar Usuario");
+        chkusuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkusuarioActionPerformed(evt);
+            }
+        });
 
+        chkpassword.setBackground(new java.awt.Color(252, 204, 204));
+        chkpassword.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         chkpassword.setText("Recordar Contraseña");
         chkpassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,6 +182,12 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe Print", 1, 14)); // NOI18N
         jLabel2.setText("DETALLES CON DULZURA");
 
+        lblVerPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblVerPasswordMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -133,28 +203,28 @@ public class frmLogin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtpassword, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                    .addComponent(txtusuario))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(btningresar)
+                .addGap(12, 12, 12)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btningresar)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtusuario, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                            .addComponent(txtpassword))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblVerPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(chkpassword)
-                        .addComponent(chkusuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chkpassword)
+                    .addComponent(chkusuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRegistrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -171,10 +241,12 @@ public class frmLogin extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 33, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblVerPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
                 .addComponent(btningresar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -200,7 +272,13 @@ public class frmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void chkpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkpasswordActionPerformed
-        // TODO add your handling code here:
+        if (chkpassword.isSelected()) {
+            // Guardar el texto del campo txtpassword en las preferencias
+            prefs2.put(PASSWORD_PREF_KEY, txtpassword.getText());
+        } else {
+            // Borrar el password guardado si se desmarca el checkbox
+            prefs2.remove(PASSWORD_PREF_KEY);
+        }
     }//GEN-LAST:event_chkpasswordActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
@@ -212,6 +290,21 @@ public class frmLogin extends javax.swing.JFrame {
         usuarioController uc = new usuarioController(u, this);
         uc.iniciarSesion();
     }//GEN-LAST:event_btningresarActionPerformed
+
+    private void chkusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkusuarioActionPerformed
+        if (chkusuario.isSelected()) {
+            // Guardar el texto del campo txtusuario en las preferencias
+            prefs.put(USUARIO_PREF_KEY, txtusuario.getText());
+        } else {
+            // Borrar el usuario guardado si se desmarca el checkbox
+            prefs.remove(USUARIO_PREF_KEY);
+        }
+
+    }//GEN-LAST:event_chkusuarioActionPerformed
+
+    private void lblVerPasswordMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblVerPasswordMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lblVerPasswordMousePressed
 
     /**
      * @param args the command line arguments
@@ -263,9 +356,9 @@ public class frmLogin extends javax.swing.JFrame {
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel2;
     public javax.swing.JPanel jPanel3;
+    public javax.swing.JLabel lblVerPassword;
     public javax.swing.JPasswordField txtpassword;
     public javax.swing.JTextField txtusuario;
     // End of variables declaration//GEN-END:variables
 
-   
 }

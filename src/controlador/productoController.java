@@ -4,6 +4,7 @@
  */
 package controlador;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import modelo.producto;
 import vista.frmProducto;
 
@@ -79,16 +84,33 @@ public class productoController implements ActionListener {
 
         vistaProducto.tbproducto.setModel(datos);
         vistaProducto.tbproducto.setRowHeight(100); // Ajustar la altura de la fila para la imagen
+
+        // Llamar al método para centrar el contenido de la tabla, excluyendo la columna de imagen
+        centrarContenidoTabla(vistaProducto.tbproducto, 6);
     }
-    
-     public void limpiar() {
+
+// Método para centrar el contenido de todas las celdas en la tabla, excepto la columna de imagen
+    public void centrarContenidoTabla(JTable tabla, int columnaImagen) {
+        DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
+        centrado.setHorizontalAlignment(SwingConstants.CENTER);
+
+        TableColumnModel columnModel = tabla.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            if (i != columnaImagen) { // Saltar la columna de imagen
+                columnModel.getColumn(i).setCellRenderer(centrado);
+            }
+        }
+    }
+
+    public void limpiar() {
         vistaProducto.txtproducto.setText(null);
         vistaProducto.txtdescripcion.setText(null);
         vistaProducto.txtprecio.setText(null);
         vistaProducto.txtobservaciones.setText(null);
         vistaProducto.txtstock.setText(null);
+        vistaProducto.lblimagen.setIcon(null);
         vistaProducto.lblimagen.setText(null);
-         vistaProducto.txtcategoria.setText(null);
+        vistaProducto.txtcategoria.setText(null);
     }
 
     @Override
@@ -122,26 +144,48 @@ public class productoController implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Por favor seleccione una fila para Actualizar");
                 return;
             }
+
+            // Obtener datos del formulario
             int id = Integer.parseInt(vistaProducto.tbproducto.getValueAt(fila, 0).toString());
             String nombreproducto = vistaProducto.txtproducto.getText();
             String descripcion = vistaProducto.txtdescripcion.getText();
             long precio = Long.parseLong(vistaProducto.txtprecio.getText());
             String observaciones = vistaProducto.txtobservaciones.getText();
             long stock = Long.parseLong(vistaProducto.txtstock.getText());
-            String imagen = vistaProducto.lblimagen.getText();
             String categoria_id_categoria = vistaProducto.txtproducto.getText();
-            
-            
+
+            // Convertir imagen a byte[]
+            byte[] imagen = null;
+            if (vistaProducto.lblimagen.getIcon() != null) {
+                ImageIcon icon = (ImageIcon) vistaProducto.lblimagen.getIcon();
+                BufferedImage bufferedImage = new BufferedImage(
+                        icon.getIconWidth(),
+                        icon.getIconHeight(),
+                        BufferedImage.TYPE_INT_RGB
+                );
+                Graphics g = bufferedImage.createGraphics();
+                icon.paintIcon(null, g, 0, 0);
+                g.dispose();
+
+                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    ImageIO.write(bufferedImage, "jpg", baos);
+                    imagen = baos.toByteArray();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            // Actualizar el producto en la base de datos con la imagen en formato byte[]
             modeloProducto.ActualizarProducto(id, nombreproducto, descripcion, precio, observaciones, stock, imagen, categoria_id_categoria);
             JOptionPane.showMessageDialog(vistaProducto, "Se ha modificado su registro");
             this.updateTable();
             this.limpiar();
         }
-        
-        if(e.getSource() == vistaProducto.btnlimpiar){
+
+        if (e.getSource() == vistaProducto.btnlimpiar) {
             this.limpiar();
         }
-        
+
     }
 
 }
