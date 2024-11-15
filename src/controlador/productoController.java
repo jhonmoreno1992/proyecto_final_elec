@@ -4,7 +4,8 @@
  */
 package controlador;
 
-import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,8 +48,18 @@ public class productoController implements ActionListener {
         try {
             BufferedImage bImage = ImageIO.read(new File(ruta));
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            // Cambia "jpg" por el formato específico de la imagen
-            ImageIO.write(bImage, "jpg", bos);
+
+            // Obtener la extensión del archivo (jpg o png)
+            String extension = ruta.substring(ruta.lastIndexOf(".") + 1).toLowerCase();
+
+            // Escribir la imagen en el formato correspondiente (jpg o png)
+            if ("png".equals(extension) || "jpg".equals(extension)) {
+                ImageIO.write(bImage, extension, bos);
+            } else {
+                System.out.println("Formato de imagen no soportado");
+                return null;
+            }
+
             return bos.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,6 +147,7 @@ public class productoController implements ActionListener {
                 modeloProducto.AgregarProducto(nombreproducto, descripcion, precio, observaciones, stock, imagen, categoria_id_categoria);
                 JOptionPane.showMessageDialog(vistaProducto, "Registro Guardado");
                 this.updateTable(); // Actualizar tabla para mostrar el nuevo registro
+                this.limpiar();
             }
         }
         if (e.getSource() == vistaProducto.btnactualizar) {
@@ -152,7 +164,7 @@ public class productoController implements ActionListener {
             long precio = Long.parseLong(vistaProducto.txtprecio.getText());
             String observaciones = vistaProducto.txtobservaciones.getText();
             long stock = Long.parseLong(vistaProducto.txtstock.getText());
-            String categoria_id_categoria = vistaProducto.txtproducto.getText();
+            String categoria_id_categoria = vistaProducto.txtcategoria.getText();
 
             // Convertir imagen a byte[]
             byte[] imagen = null;
@@ -161,14 +173,18 @@ public class productoController implements ActionListener {
                 BufferedImage bufferedImage = new BufferedImage(
                         icon.getIconWidth(),
                         icon.getIconHeight(),
-                        BufferedImage.TYPE_INT_RGB
+                        BufferedImage.TYPE_INT_RGB // Imagen con fondo blanco
                 );
-                Graphics g = bufferedImage.createGraphics();
-                icon.paintIcon(null, g, 0, 0);
-                g.dispose();
+
+                // Crear gráficos y pintar un fondo blanco antes de dibujar el icono
+                Graphics2D g2d = bufferedImage.createGraphics();
+                g2d.setColor(Color.WHITE); // Establecer color de fondo blanco
+                g2d.fillRect(0, 0, icon.getIconWidth(), icon.getIconHeight()); // Rellenar con fondo blanco
+                icon.paintIcon(null, g2d, 0, 0); // Pintar el icono encima del fondo blanco
+                g2d.dispose();
 
                 try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                    ImageIO.write(bufferedImage, "jpg", baos);
+                    ImageIO.write(bufferedImage, "jpg", baos); // Guardar como JPG para evitar transparencia
                     imagen = baos.toByteArray();
                 } catch (IOException ex) {
                     ex.printStackTrace();
