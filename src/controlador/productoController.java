@@ -49,10 +49,8 @@ public class productoController implements ActionListener {
             BufferedImage bImage = ImageIO.read(new File(ruta));
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-            // Obtener la extensión del archivo (jpg o png)
             String extension = ruta.substring(ruta.lastIndexOf(".") + 1).toLowerCase();
 
-            // Escribir la imagen en el formato correspondiente (jpg o png)
             if ("png".equals(extension) || "jpg".equals(extension)) {
                 ImageIO.write(bImage, extension, bos);
             } else {
@@ -74,40 +72,35 @@ public class productoController implements ActionListener {
         DefaultTableModel datos = new DefaultTableModel() {
             @Override
             public Class<?> getColumnClass(int column) {
-                // Definir la columna de imagen para mostrar ImageIcon
                 return column == 6 ? ImageIcon.class : Object.class;
             }
         };
         datos.setColumnIdentifiers(columna);
 
         for (Object[] fila : datosProducto) {
-            if (fila[6] instanceof byte[]) { // Si la imagen es byte[]
+            if (fila[6] instanceof byte[]) {
                 byte[] imagenBytes = (byte[]) fila[6];
                 ImageIcon imagenIcon = new ImageIcon(imagenBytes);
-                // Escalar la imagen a un tamaño adecuado
                 Image img = imagenIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-                fila[6] = new ImageIcon(img); // Asignar ImageIcon escalado
+                fila[6] = new ImageIcon(img);
             } else {
-                fila[6] = null; // Si no hay imagen, muestra celda vacía o ícono por defecto
+                fila[6] = null;
             }
             datos.addRow(fila);
         }
 
         vistaProducto.tbproducto.setModel(datos);
-        vistaProducto.tbproducto.setRowHeight(100); // Ajustar la altura de la fila para la imagen
-
-        // Llamar al método para centrar el contenido de la tabla, excluyendo la columna de imagen
+        vistaProducto.tbproducto.setRowHeight(100);
         centrarContenidoTabla(vistaProducto.tbproducto, 6);
     }
 
-// Método para centrar el contenido de todas las celdas en la tabla, excepto la columna de imagen
     public void centrarContenidoTabla(JTable tabla, int columnaImagen) {
         DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
         centrado.setHorizontalAlignment(SwingConstants.CENTER);
 
         TableColumnModel columnModel = tabla.getColumnModel();
         for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            if (i != columnaImagen) { // Saltar la columna de imagen
+            if (i != columnaImagen) { 
                 columnModel.getColumn(i).setCellRenderer(centrado);
             }
         }
@@ -131,7 +124,7 @@ public class productoController implements ActionListener {
             String nombreproducto = vistaProducto.txtproducto.getText();
             String descripcion = vistaProducto.txtdescripcion.getText();
             String observaciones = vistaProducto.txtobservaciones.getText();
-            String rutaImagen = vistaProducto.lblimagen.getText(); // Ruta de la imagen
+            String rutaImagen = vistaProducto.lblimagen.getText();
             String categoria_id_categoria = vistaProducto.txtcategoria.getText();
 
             if (vistaProducto.txtprecio.getText().isEmpty() || nombreproducto.isEmpty()
@@ -142,11 +135,11 @@ public class productoController implements ActionListener {
             } else {
                 precio = Long.parseLong(vistaProducto.txtprecio.getText());
                 stock = Long.parseLong(vistaProducto.txtstock.getText());
-                byte[] imagen = convertirImagenABytes(rutaImagen); // Convertir imagen a byte[]
+                byte[] imagen = convertirImagenABytes(rutaImagen);
 
                 modeloProducto.AgregarProducto(nombreproducto, descripcion, precio, observaciones, stock, imagen, categoria_id_categoria);
                 JOptionPane.showMessageDialog(vistaProducto, "Registro Guardado");
-                this.updateTable(); // Actualizar tabla para mostrar el nuevo registro
+                this.updateTable();
                 this.limpiar();
             }
         }
@@ -157,7 +150,6 @@ public class productoController implements ActionListener {
                 return;
             }
 
-            // Obtener datos del formulario
             int id = Integer.parseInt(vistaProducto.tbproducto.getValueAt(fila, 0).toString());
             String nombreproducto = vistaProducto.txtproducto.getText();
             String descripcion = vistaProducto.txtdescripcion.getText();
@@ -166,32 +158,29 @@ public class productoController implements ActionListener {
             long stock = Long.parseLong(vistaProducto.txtstock.getText());
             String categoria_id_categoria = vistaProducto.txtcategoria.getText();
 
-            // Convertir imagen a byte[]
             byte[] imagen = null;
             if (vistaProducto.lblimagen.getIcon() != null) {
                 ImageIcon icon = (ImageIcon) vistaProducto.lblimagen.getIcon();
                 BufferedImage bufferedImage = new BufferedImage(
                         icon.getIconWidth(),
                         icon.getIconHeight(),
-                        BufferedImage.TYPE_INT_RGB // Imagen con fondo blanco
+                        BufferedImage.TYPE_INT_RGB
                 );
 
-                // Crear gráficos y pintar un fondo blanco antes de dibujar el icono
                 Graphics2D g2d = bufferedImage.createGraphics();
-                g2d.setColor(Color.WHITE); // Establecer color de fondo blanco
-                g2d.fillRect(0, 0, icon.getIconWidth(), icon.getIconHeight()); // Rellenar con fondo blanco
-                icon.paintIcon(null, g2d, 0, 0); // Pintar el icono encima del fondo blanco
+                g2d.setColor(Color.WHITE);
+                g2d.fillRect(0, 0, icon.getIconWidth(), icon.getIconHeight());
+                icon.paintIcon(null, g2d, 0, 0);
                 g2d.dispose();
 
                 try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                    ImageIO.write(bufferedImage, "jpg", baos); // Guardar como JPG para evitar transparencia
+                    ImageIO.write(bufferedImage, "jpg", baos);
                     imagen = baos.toByteArray();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
 
-            // Actualizar el producto en la base de datos con la imagen en formato byte[]
             modeloProducto.ActualizarProducto(id, nombreproducto, descripcion, precio, observaciones, stock, imagen, categoria_id_categoria);
             JOptionPane.showMessageDialog(vistaProducto, "Se ha modificado su registro");
             this.updateTable();

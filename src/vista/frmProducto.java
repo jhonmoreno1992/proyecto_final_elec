@@ -20,18 +20,14 @@ public class frmProducto extends javax.swing.JFrame {
     public frmProducto() {
         initComponents();
         
-        // Agregar el ActionListener para el botón btnLogin
         btncerrar.addActionListener(evt -> abrirLogin());
     }
     
-    // Método para abrir frmLogin y cerrar frmRegistro
     private void abrirLogin() {
-        // Crear una instancia del formulario de login
         frmLogin loginForm = new frmLogin();
-        loginForm.setVisible(true); // Mostrar el formulario de login
-        loginForm.setLocationRelativeTo(null); // Centrar el formulario de login
+        loginForm.setVisible(true);
+        loginForm.setLocationRelativeTo(null);
 
-        // Cerrar el formulario de registro actual
         this.dispose();
     }
 
@@ -359,7 +355,6 @@ public class frmProducto extends javax.swing.JFrame {
     private void btnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodificarActionPerformed
         int fila = tbproducto.getSelectedRow();
         if (fila >= 0) {
-            // Cargar los datos de la fila seleccionada en los campos de texto
             txtproducto.setText(tbproducto.getValueAt(fila, 1).toString());
             txtdescripcion.setText(tbproducto.getValueAt(fila, 2).toString());
             txtprecio.setText(tbproducto.getValueAt(fila, 3).toString());
@@ -367,13 +362,12 @@ public class frmProducto extends javax.swing.JFrame {
             txtstock.setText(tbproducto.getValueAt(fila, 5).toString());
             txtcategoria.setText(tbproducto.getValueAt(fila, 7).toString());
 
-            // Obtener el objeto de la imagen y cargarla en lblimagen si es un ImageIcon
             Object imagenObj = tbproducto.getValueAt(fila, 6);
             if (imagenObj instanceof ImageIcon imageIcon) {
                 lblimagen.setIcon(imageIcon);
-                lblimagen.setText(""); // Asegurarse de que no se muestre texto adicional
+                lblimagen.setText("");
             } else {
-                lblimagen.setIcon(null); // Limpiar si no hay imagen
+                lblimagen.setIcon(null); 
             }
 
         } else {

@@ -102,14 +102,14 @@ public class registro {
             ps.setString(9, confirmpassword);
             ps.setInt(10, id);
 
-            int filasActualizadas = ps.executeUpdate(); // Cambia ps.execute() a ps.executeUpdate()
+            int filasActualizadas = ps.executeUpdate();
             ps.close();
 
-            return filasActualizadas > 0; // Retorna true si se actualizó al menos una fila
+            return filasActualizadas > 0; 
 
         } catch (Exception e) {
             System.err.println("Error al actualizar el registro: " + e.getMessage());
-            return false; // Retorna false en caso de error
+            return false;
         }
     }
     

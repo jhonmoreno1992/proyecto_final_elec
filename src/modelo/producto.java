@@ -61,7 +61,6 @@ public class producto {
         return datos;
     }
     
-
     public void AgregarProducto(String nombreproducto, String descripcion, long precio, String observaciones, long stock, byte[] imagen, String categoria_id_categoria) {
         String sql = "INSERT INTO producto(nombreproducto, descripcion, precio, observaciones, stock, imagen, categoria_id_categoria) VALUES(?,?,?,?,?,?,?)";
         try {

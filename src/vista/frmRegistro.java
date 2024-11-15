@@ -12,34 +12,29 @@ public class frmRegistro extends javax.swing.JFrame {
 
     public frmRegistro() {
         initComponents();
-        // Imprimir los nombres de las columnas para verificar índices
         for (int i = 0; i < tbregistro.getColumnCount(); i++) {
             System.out.println("Columna " + i + ": " + tbregistro.getColumnName(i));
         }
         ocultarColumnasConAsteriscos();
 
-        // Agregar el ActionListener para el botón btnLogin
         btnlogin.addActionListener(evt -> abrirLogin());
     }
 
     private void ocultarColumnasConAsteriscos() {
-        int usuarioColumnIndex = 7; // Índice real de la columna "usuario" en tu tabla
-        int passwordColumnIndex = 8; // Índice real de la columna "password" en tu tabla
+        int usuarioColumnIndex = 7; 
+        int passwordColumnIndex = 8; 
 
-        // Renderizador personalizado para mostrar asteriscos en las columnas de usuario y password
         DefaultTableCellRenderer asteriskRenderer = new DefaultTableCellRenderer() {
             @Override
             protected void setValue(Object value) {
                 if (value != null) {
-                    // Cambia el texto por asteriscos de la misma longitud
-                    setText("*".repeat(value.toString().length()));  // Usa "•" o "*"
+                    setText("*".repeat(value.toString().length()));
                 } else {
                     setText("");
                 }
             }
         };
 
-        // Asigna el renderizador personalizado a las columnas especificadas
         if (usuarioColumnIndex < tbregistro.getColumnCount()) {
             tbregistro.getColumnModel().getColumn(usuarioColumnIndex).setCellRenderer(asteriskRenderer);
         }
@@ -48,14 +43,11 @@ public class frmRegistro extends javax.swing.JFrame {
         }
     }
 
-    // Método para abrir frmLogin y cerrar frmRegistro
     private void abrirLogin() {
-        // Crear una instancia del formulario de login
         frmLogin loginForm = new frmLogin();
-        loginForm.setVisible(true); // Mostrar el formulario de login
-        loginForm.setLocationRelativeTo(null); // Centrar el formulario de login
+        loginForm.setVisible(true);
+        loginForm.setLocationRelativeTo(null);
 
-        // Cerrar el formulario de registro actual
         this.dispose();
     }
 

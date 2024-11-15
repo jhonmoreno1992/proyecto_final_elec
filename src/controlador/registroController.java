@@ -52,7 +52,7 @@ public class registroController implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        // Métodos guardar, modificar y limpiar
+        
         if (e.getSource() == vistaRegistro.btnguardar) {
             long cedula = 0, telefono = 0;
             String nombre = vistaRegistro.txtnombre.getText();
@@ -63,37 +63,33 @@ public class registroController implements ActionListener {
             String password = vistaRegistro.txtpassword.getText();
             String confirmpassword = vistaRegistro.txtconfirmpassword.getText();
 
-            // Verificar si hay campos vacíos
             if (vistaRegistro.txtcedula.getText().isEmpty() || nombre.isEmpty() || apellido.isEmpty()
                     || direccion.isEmpty() || correo.isEmpty() || usuario.isEmpty()
                     || password.isEmpty() || confirmpassword.isEmpty()
                     || vistaRegistro.txttelefono.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Faltan datos");
-                return; // Salir del método si hay campos vacíos
+                return; 
             }
 
-            // Verificar que las contraseñas coincidan
             if (!password.equals(confirmpassword)) {
                 JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
-                return; // Salir del método si las contraseñas no coinciden
+                return;
             }
 
-            // Convertir los campos numéricos y guardar el registro
             cedula = Long.parseLong(vistaRegistro.txtcedula.getText());
             telefono = Long.parseLong(vistaRegistro.txttelefono.getText());
             modeloRegistro.AgregarRegistro(nombre, apellido, cedula, direccion, telefono, correo, usuario, password, confirmpassword);
             JOptionPane.showMessageDialog(null, "Registro guardado satisfactoriamente");
 
-            // Actualizar la tabla y limpiar los campos del formulario
             this.updateTable();
             this.limpiar();
         }
 
         if (e.getSource() == vistaRegistro.btnactualizar) {
-            // Obtener fila seleccionada
+           
             fila = vistaRegistro.tbregistro.getSelectedRow();
             if (fila == -1) {
-                JOptionPane.showMessageDialog(null, "Por favor seleccione una fila para actualizar");
+                JOptionPane.showMessageDialog(null, "Por favor seleccione un registro para actualizar");
                 return;
             }
 
@@ -108,13 +104,11 @@ public class registroController implements ActionListener {
             String password = vistaRegistro.txtpassword.getText();
             String confirmpassword = vistaRegistro.txtconfirmpassword.getText();
 
-            // Verificar que las contraseñas coincidan al actualizar
             if (!password.equals(confirmpassword)) {
                 JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
-                return; // Salir del método si las contraseñas no coinciden
+                return;
             }
 
-            // Actualizar el registro si las contraseñas coinciden
             boolean actualizado = modeloRegistro.ActualizarRegistro(id, nombre, apellido, cedula, direccion, telefono, correo, usuario, password, confirmpassword);
             if (actualizado) {
                 JOptionPane.showMessageDialog(null, "Se ha modificado su registro");

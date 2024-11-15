@@ -27,7 +27,6 @@ public class conexion {
             con = DriverManager.getConnection(url,user,password);
             if (con!=null){
                 System.out.println("Conexion a Base de datos " + bd);
-                //JOptionPane.showMessageDialog(null, "Conexion a Base de datos " + bd);
             }
         } catch (HeadlessException | ClassNotFoundException | SQLException e){
             System.out.println(e);

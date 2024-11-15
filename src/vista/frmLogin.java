@@ -16,14 +16,11 @@ import modelo.usuario;
  */
 public class frmLogin extends javax.swing.JFrame {
 
-    private void abrirFormularioRegistro() {
-        // Cerrar el formulario actual (frmLogin)
+    private void abrirFormularioRegistro() {     
         this.dispose();
 
-        // Crear una nueva instancia de frmRegistro
         frmRegistro registroForm = new frmRegistro();
 
-        // Hacer visible el nuevo formulario
         registroForm.setVisible(true);
     }
 
@@ -36,45 +33,39 @@ public class frmLogin extends javax.swing.JFrame {
     private void ajustarIcono(javax.swing.JLabel label, String rutaIcono) {
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource(rutaIcono));
         
-        // Obtener el tamaño del JLabel
         int ancho = label.getWidth();
         int alto = label.getHeight();
         
-        // Redimensionar la imagen al tamaño del JLabel
         Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
         
-        // Establecer el icono redimensionado en el JLabel
         label.setIcon(new ImageIcon(imagenRedimensionada));
     }
     public frmLogin() {
         initComponents();
 
-        // Cargar y redimensionar el icono al tamaño del JLabel
         ajustarIcono(lblVerPassword, "/asset/ojo2.png");
 
         lblVerPassword.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                txtpassword.setEchoChar((char) 0); // Mostrar la contraseña
+                txtpassword.setEchoChar((char) 0);
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                txtpassword.setEchoChar('*'); // Ocultar la contraseña
+                txtpassword.setEchoChar('*');
             }
         });
 
-        // Obtener el último usuario guardado en las preferencias y mostrarlo en txtusuario
         String ultimoUsuario = prefs.get(USUARIO_PREF_KEY, "");
         if (!ultimoUsuario.isEmpty()) {
             txtusuario.setText(ultimoUsuario);
-            chkusuario.setSelected(true); // Seleccionar el checkbox si hay un usuario guardado
+            chkusuario.setSelected(true);
         }
-        // Obtener el último password guardado en las preferencias y mostrarlo en txtpassword
         String ultimaPassword = prefs2.get(PASSWORD_PREF_KEY, "");
         if (!ultimaPassword.isEmpty()) {
             txtpassword.setText(ultimaPassword);
-            chkpassword.setSelected(true); // Seleccionar el checkbox si hay un password guardado
+            chkpassword.setSelected(true);
         }
     }
 
@@ -273,10 +264,8 @@ public class frmLogin extends javax.swing.JFrame {
 
     private void chkpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkpasswordActionPerformed
         if (chkpassword.isSelected()) {
-            // Guardar el texto del campo txtpassword en las preferencias
             prefs2.put(PASSWORD_PREF_KEY, txtpassword.getText());
         } else {
-            // Borrar el password guardado si se desmarca el checkbox
             prefs2.remove(PASSWORD_PREF_KEY);
         }
     }//GEN-LAST:event_chkpasswordActionPerformed
@@ -293,10 +282,8 @@ public class frmLogin extends javax.swing.JFrame {
 
     private void chkusuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkusuarioActionPerformed
         if (chkusuario.isSelected()) {
-            // Guardar el texto del campo txtusuario en las preferencias
             prefs.put(USUARIO_PREF_KEY, txtusuario.getText());
         } else {
-            // Borrar el usuario guardado si se desmarca el checkbox
             prefs.remove(USUARIO_PREF_KEY);
         }
 
@@ -334,7 +321,6 @@ public class frmLogin extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new frmLogin().setVisible(true);
